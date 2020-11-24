@@ -1,0 +1,12 @@
+spring:
+  data:
+    elasticsearch:
+      repositories: true
+      client:
+        reactive:
+          endpoints:
+            - 192.168.10.133:9200
+            - 192.168.10.134:9200
+            - 192.168.10.135:9200
+          connection-timeout: 3000
+          socket-timeout: 30000
