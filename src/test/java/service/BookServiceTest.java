@@ -30,10 +30,10 @@ public class BookServiceTest extends BaseTest {
     @Test
     public void addBatch() {
         long timeStart = System.currentTimeMillis();
-        for (Integer n = 0; n < 1000000; n++) {
+        for (Integer n = 0; n < 1000; n++) {
             Book book = new Book();
             book.setId(RandomString.make(32));
-            book.setName("itclj_test_" + RandomString.make(10));
+            book.setName("itclj test " + RandomString.make(10));
             book.setAuthor("itclj_" + RandomString.make(3));
             bookService.add(book);
             if (n % 100 == 0) {
@@ -81,8 +81,8 @@ public class BookServiceTest extends BaseTest {
         Integer pageNum = 0;
         Integer pageSize = 5;
         Book book = new Book();
-        //book.setName("itclj");
-        book.setDesc("这是");
+        book.setName("itclj");
+        //book.setDesc("这是");
         Page<Book> bookPage = bookService.queryPage(pageNum, pageSize, book);
         bookPage.forEach(obj -> {
             logger.info(JSON.toJSONString(obj));
