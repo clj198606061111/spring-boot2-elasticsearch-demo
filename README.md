@@ -17,8 +17,11 @@ spring-boot2-elasticsearch-demo
 - http://192.168.10.133:9200/_cat/nodes?v
 
 ## 查询
-1、查询所有
-http://192.168.10.133:9200/book/_search?pretty
+1. 查询所有
+- http://192.168.10.133:9200/book/_search?pretty
+
+2. 根据id查询
+- http://192.168.10.133:9200/book/_doc/cHczGTXuxyN1ownvsUM7hFjHrBRsbL3u?pretty
 
 ## 参考
 - https://blog.csdn.net/jacksonary/article/details/82729556

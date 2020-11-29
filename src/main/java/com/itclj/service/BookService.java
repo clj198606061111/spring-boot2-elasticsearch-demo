@@ -1,6 +1,7 @@
 package com.itclj.service;
 
 import com.itclj.models.Book;
+import org.springframework.data.domain.Page;
 
 
 public interface BookService {
@@ -27,7 +28,7 @@ public interface BookService {
      * @param id
      * @return
      */
-    boolean delete(String id);
+    boolean delById(String id);
 
     /**
      * 按照ID查询
@@ -39,8 +40,19 @@ public interface BookService {
 
     /**
      * 查询所有
+     * <p>
+     * 最多一万条，超过一万条不允许查询
      *
      * @return
      */
     Iterable<Book> findAll();
+
+    /**
+     * 分页查询
+     *
+     * @param pageNum  页码
+     * @param pageSize 每页记录数
+     * @return
+     */
+    Page<Book> queryPage(Integer pageNum, Integer pageSize, Book book);
 }
