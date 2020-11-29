@@ -15,6 +15,7 @@ public class Book {
     private String id;
     private String name;
     private String author;
+    private String desc;
 
     public String getId() {
         return id;
@@ -38,5 +39,13 @@ public class Book {
 
     public void setAuthor(String author) {
         this.author = author;
+    }
+
+    public String getDesc() {
+        return desc;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
     }
 }

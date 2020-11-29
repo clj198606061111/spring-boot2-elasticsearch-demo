@@ -22,6 +22,7 @@ public class BookServiceTest extends BaseTest {
         book.setId(RandomString.make(32));
         book.setName("itclj_test_" + RandomString.make(10));
         book.setAuthor("itclj_" + RandomString.make(3));
+        book.setDesc("这是一个描述");
         Book bookR = bookService.add(book);
         logger.info(JSON.toJSONString(bookR));
     }
@@ -77,11 +78,11 @@ public class BookServiceTest extends BaseTest {
 
     @Test
     public void queryPage() {
-        Integer pageNum = 1;
+        Integer pageNum = 0;
         Integer pageSize = 5;
         Book book = new Book();
-        book.setName("itclj");
-        book.setId("XRnpZd8TgvFhyzTMnGUZmm2fj4nBgogr");
+        //book.setName("itclj");
+        book.setDesc("这是");
         Page<Book> bookPage = bookService.queryPage(pageNum, pageSize, book);
         bookPage.forEach(obj -> {
             logger.info(JSON.toJSONString(obj));
