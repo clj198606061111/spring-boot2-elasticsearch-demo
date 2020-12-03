@@ -38,4 +38,12 @@ public class EsServiceTest extends BaseTest {
         Book book = esService.getById(id);
         logger.info(JSON.toJSONString(book));
     }
+
+    @Test
+    public void updateDesc() throws IOException {
+        String id = "XRnpZd8TgvFhyzTMnGUZmm2fj4nBgogr";
+        String desc = "通过脚本修改特定字段值";
+        boolean res = esService.updateDesc(id, desc);
+        logger.info("res={}", res);
+    }
 }

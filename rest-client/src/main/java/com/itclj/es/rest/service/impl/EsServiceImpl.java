@@ -1,6 +1,7 @@
 package com.itclj.es.rest.service.impl;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.itclj.es.rest.config.EsUtil;
 import com.itclj.es.rest.entity.Book;
 import com.itclj.es.rest.service.EsService;
@@ -67,6 +68,28 @@ public class EsServiceImpl implements EsService {
         String responseBody = EntityUtils.toString(response.getEntity());
         logger.info(responseBody);
         return EsUtil.pass(responseBody, Book.class);
+    }
+
+    @Override
+    public boolean updateDesc(String id, String desc) throws IOException {
+        // 构造HTTP请求
+        Request request = new Request("POST", new StringBuilder("/book/_doc/").
+                append(id).append("/_update").toString());
+
+        JSONObject jsonObject = new JSONObject();
+        // 创建脚本语言，如果是字符变量，必须加单引号
+        StringBuilder op1 = new StringBuilder("ctx._source.desc=").append("'" + desc + "'");
+        jsonObject.put("script", op1);
+
+        request.setEntity(new NStringEntity(jsonObject.toString(), ContentType.APPLICATION_JSON));
+
+        // 执行HTTP请求
+        Response response = client.performRequest(request);
+
+        // 获取返回的内容
+        String responseBody = EntityUtils.toString(response.getEntity());
+        logger.info(responseBody);
+        return true;
     }
 
     @Override

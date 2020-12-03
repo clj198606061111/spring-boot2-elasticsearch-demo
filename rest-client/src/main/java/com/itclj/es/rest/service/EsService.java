@@ -26,5 +26,14 @@ public interface EsService {
      */
     Book getById(String id) throws IOException;
 
+    /**
+     * 通过Id更新某个属性
+     *
+     * @param id   记录Id
+     * @param desc 描述
+     * @return
+     */
+    boolean updateDesc(String id, String desc) throws IOException;
+
     List<Book> queryByName(String name);
 }
