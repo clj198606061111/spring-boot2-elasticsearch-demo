@@ -1,5 +1,6 @@
 package service;
 
+import com.alibaba.fastjson.JSON;
 import com.itclj.es.rest.entity.Book;
 import com.itclj.es.rest.service.EsService;
 import common.BaseTest;
@@ -29,5 +30,12 @@ public class EsServiceTest extends BaseTest {
         String id = "znGdKf8GjxML0DrCneu5j5KGtFHNiboM";
         boolean res = esService.delById(id);
         logger.info("res={}", res);
+    }
+
+    @Test
+    public void getById() throws IOException {
+        String id = "XRnpZd8TgvFhyzTMnGUZmm2fj4nBgogr";
+        Book book = esService.getById(id);
+        logger.info(JSON.toJSONString(book));
     }
 }

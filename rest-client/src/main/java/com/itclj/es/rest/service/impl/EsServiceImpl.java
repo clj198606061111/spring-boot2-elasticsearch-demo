@@ -1,6 +1,7 @@
 package com.itclj.es.rest.service.impl;
 
 import com.alibaba.fastjson.JSON;
+import com.itclj.es.rest.config.EsUtil;
 import com.itclj.es.rest.entity.Book;
 import com.itclj.es.rest.service.EsService;
 import org.apache.http.entity.ContentType;
@@ -56,6 +57,16 @@ public class EsServiceImpl implements EsService {
         String responseBody = EntityUtils.toString(response.getEntity());
         logger.info(responseBody);
         return true;
+    }
+
+    @Override
+    public Book getById(String id) throws IOException {
+        Request request = new Request(HttpMethod.GET.name(),
+                new StringBuilder("/book/_doc/").append(id).toString());
+        Response response = client.performRequest(request);
+        String responseBody = EntityUtils.toString(response.getEntity());
+        logger.info(responseBody);
+        return EsUtil.pass(responseBody, Book.class);
     }
 
     @Override
