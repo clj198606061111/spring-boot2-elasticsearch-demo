@@ -40,10 +40,20 @@ public class EsServiceTest extends BaseTest {
     }
 
     @Test
-    public void updateDesc() throws IOException {
+    public void updateDescByScript() throws IOException {
         String id = "XRnpZd8TgvFhyzTMnGUZmm2fj4nBgogr";
         String desc = "通过脚本修改特定字段值";
-        boolean res = esService.updateDesc(id, desc);
+        boolean res = esService.updateDescByScript(id, desc);
+        logger.info("res={}", res);
+    }
+
+    @Test
+    public void update() throws IOException {
+        String id = "XRnpZd8TgvFhyzTMnGUZmm2fj4nBgogr";
+        Book book = new Book();
+        book.setAuthor("作者");
+        book.setDesc("直接修改描述");
+        boolean res = esService.update(id, book);
         logger.info("res={}", res);
     }
 }

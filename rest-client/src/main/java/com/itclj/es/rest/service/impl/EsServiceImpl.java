@@ -71,7 +71,27 @@ public class EsServiceImpl implements EsService {
     }
 
     @Override
-    public boolean updateDesc(String id, String desc) throws IOException {
+    public boolean update(String id, Book book) throws IOException {
+        // 构造HTTP请求
+        Request request = new Request("POST", new StringBuilder("/book/_doc/").
+                append(id).append("/_update").toString());
+
+        // 将数据丢进去，这里一定要外包一层“doc”，否则内部不能识别
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("doc", book);
+        request.setEntity(new NStringEntity(jsonObject.toString(), ContentType.APPLICATION_JSON));
+
+        // 执行HTTP请求
+        Response response = client.performRequest(request);
+
+        // 获取返回的内容
+        String responseBody = EntityUtils.toString(response.getEntity());
+        logger.info(responseBody);
+        return true;
+    }
+
+    @Override
+    public boolean updateDescByScript(String id, String desc) throws IOException {
         // 构造HTTP请求
         Request request = new Request("POST", new StringBuilder("/book/_doc/").
                 append(id).append("/_update").toString());

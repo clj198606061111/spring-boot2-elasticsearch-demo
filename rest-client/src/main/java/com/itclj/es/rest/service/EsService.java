@@ -27,13 +27,24 @@ public interface EsService {
     Book getById(String id) throws IOException;
 
     /**
+     * 直接更新索引对象
+     *
+     * @param id   记录Id
+     * @param book 更新的对象
+     * @return
+     */
+    boolean update(String id, Book book) throws IOException;
+
+    /**
      * 通过Id更新某个属性
+     * <p>
+     * 通过脚本更新，脚本的表达能力很强，可以实现复杂的处理逻辑，达到通过条件更新操作数据得目的
      *
      * @param id   记录Id
      * @param desc 描述
      * @return
      */
-    boolean updateDesc(String id, String desc) throws IOException;
+    boolean updateDescByScript(String id, String desc) throws IOException;
 
     List<Book> queryByName(String name);
 }
