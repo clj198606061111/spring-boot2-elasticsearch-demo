@@ -113,7 +113,27 @@ public class EsServiceImpl implements EsService {
     }
 
     @Override
-    public List<Book> queryByName(String name) {
+    public List<Book> queryByName(String name) throws IOException {
+        Request request = new Request("POST", new StringBuilder("/book/_doc/_search").toString());
+
+        JSONObject query = new JSONObject();
+        JSONObject match = new JSONObject();
+        JSONObject termName = new JSONObject();
+        termName.put("name", name);
+        match.put("match", termName);
+        query.put("query", match);
+
+        logger.info(JSON.toJSONString(query));
+
+        request.setEntity(new NStringEntity(JSON.toJSONString(query), ContentType.APPLICATION_JSON));
+
+        // 执行HTTP请求
+        Response response = client.performRequest(request);
+
+        // 获取返回的内容
+        String responseBody = EntityUtils.toString(response.getEntity());
+        logger.info(responseBody);
+
         return null;
     }
 }

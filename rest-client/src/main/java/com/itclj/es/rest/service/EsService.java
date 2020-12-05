@@ -46,5 +46,10 @@ public interface EsService {
      */
     boolean updateDescByScript(String id, String desc) throws IOException;
 
-    List<Book> queryByName(String name);
+    /**
+     * 通过名字查询
+     * @param name
+     * @return
+     */
+    List<Book> queryByName(String name) throws IOException;
 }

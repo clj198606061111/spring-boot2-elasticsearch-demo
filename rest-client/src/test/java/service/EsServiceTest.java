@@ -56,4 +56,10 @@ public class EsServiceTest extends BaseTest {
         boolean res = esService.update(id, book);
         logger.info("res={}", res);
     }
+
+    @Test
+    public void queryByName() throws IOException {
+        String name="itclj_test_55uSth7adT";
+        esService.queryByName(name);
+    }
 }
