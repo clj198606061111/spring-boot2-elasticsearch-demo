@@ -15,5 +15,5 @@ public interface EsService {
 
     City getById(Integer id) throws IOException;
 
-    List<City> queryByName(String name);
+    List<City> queryByName(String name) throws IOException;
 }

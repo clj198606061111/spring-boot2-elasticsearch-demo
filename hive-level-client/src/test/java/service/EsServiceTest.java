@@ -10,6 +10,7 @@ import javax.annotation.Resource;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 public class EsServiceTest extends BaseTest {
 
@@ -19,7 +20,7 @@ public class EsServiceTest extends BaseTest {
     @Test
     public void add() throws IOException {
         City city = new City();
-        city.setId(1);
+        city.setId("1");
         city.setName("city");
         city.setCreateBy("itclj");
         city.setCreateDate(new Date());
@@ -40,7 +41,7 @@ public class EsServiceTest extends BaseTest {
     @Test
     public void update() throws IOException {
         City city = new City();
-        city.setId(1);
+        city.setId("1");
         city.setName("city");
         city.setCreateBy("itclj");
         city.setCreateDate(new Date());
@@ -56,5 +57,14 @@ public class EsServiceTest extends BaseTest {
         Integer id = 1;
         City city = esService.getById(id);
         logger.info(JSON.toJSONString(city));
+    }
+
+    @Test
+    public void queryByName() throws IOException {
+        String name = "";
+        List<City> cityList = esService.queryByName(name);
+        cityList.forEach(obj -> {
+            logger.info(JSON.toJSONString(obj));
+        });
     }
 }

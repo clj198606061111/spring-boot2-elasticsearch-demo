@@ -7,15 +7,24 @@ import org.elasticsearch.action.delete.DeleteRequest;
 import org.elasticsearch.action.get.GetRequest;
 import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.index.IndexRequest;
+import org.elasticsearch.action.search.SearchRequest;
+import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.update.UpdateRequest;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
+import org.elasticsearch.common.unit.TimeValue;
 import org.elasticsearch.common.xcontent.XContentType;
+import org.elasticsearch.index.query.QueryBuilder;
+import org.elasticsearch.search.Scroll;
+import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 @Service
 public class EsServiceImpl implements EsService {
@@ -52,7 +61,12 @@ public class EsServiceImpl implements EsService {
     }
 
     @Override
-    public List<City> queryByName(String name) {
-        return null;
+    public List<City> queryByName(String name) throws IOException {
+        SearchRequest request = new SearchRequest();
+        request.scroll(new TimeValue(1, TimeUnit.HOURS)); //滚动游标保留多久
+        request.setBatchedReduceSize(10);//每批次拉多少条
+        request.indices(INDEX_CITY);
+        SearchResponse response = client.search(request, RequestOptions.DEFAULT);
+        return Arrays.asList(response.getHits().getHits()).stream().map(obj -> JSON.parseObject(obj.getSourceAsString(), City.class)).collect(Collectors.toList());
     }
 }

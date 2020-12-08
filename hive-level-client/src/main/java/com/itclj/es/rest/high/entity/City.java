@@ -8,7 +8,7 @@ public class City {
     /**
      * 记录Id
      */
-    private Integer id;
+    private String id;
 
     /**
      * 城市名称
@@ -40,11 +40,11 @@ public class City {
      */
     private List<String> tags;
 
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
     }
 
