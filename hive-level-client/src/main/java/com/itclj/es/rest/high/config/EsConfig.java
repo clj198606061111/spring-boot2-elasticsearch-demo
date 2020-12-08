@@ -1,4 +1,4 @@
-package com.itclj.es.rest.config;
+package com.itclj.es.rest.high.config;
 
 import org.apache.http.Header;
 import org.apache.http.HttpHost;
@@ -9,25 +9,23 @@ import org.apache.http.message.BasicHeader;
 import org.elasticsearch.client.Node;
 import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestClientBuilder;
+import org.elasticsearch.client.RestHighLevelClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import java.security.KeyManagementException;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
-
-/**
- * 参考：https://blog.csdn.net/jacksonary/article/details/82729556
- */
 @Configuration
 public class EsConfig {
 
     private Logger logger = LoggerFactory.getLogger(EsConfig.class);
 
     @Bean
-    public RestClient getClient() throws KeyStoreException, NoSuchAlgorithmException, KeyManagementException {
+    public RestHighLevelClient getHighClient() {
+        return new RestHighLevelClient(getClientBuilder());
+    }
+
+    private RestClientBuilder getClientBuilder() {
         // 如果有多个从节点可以持续在内部new多个HttpHost，参数1是ip,参数2是HTTP端口，参数3是通信协议
         RestClientBuilder clientBuilder = RestClient.builder(new HttpHost("192.168.10.133", 9200, "http"));
 
@@ -74,31 +72,28 @@ public class EsConfig {
 
         //配置ES安全认证
         /**
-        //如果ES设置了密码，那这里也提供了一个基本的认证机制，下面设置了ES需要基本身份验证的默认凭据提供程序
-        final CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
-        credentialsProvider.setCredentials(AuthScope.ANY,
-                new UsernamePasswordCredentials("user", "password"));
-        clientBuilder.setHttpClientConfigCallback(new RestClientBuilder.HttpClientConfigCallback() {
-            @Override
-            public HttpAsyncClientBuilder customizeHttpClient(HttpAsyncClientBuilder httpClientBuilder) {
-                return httpClientBuilder.setDefaultCredentialsProvider(credentialsProvider);
-            }
+         //如果ES设置了密码，那这里也提供了一个基本的认证机制，下面设置了ES需要基本身份验证的默认凭据提供程序
+         final CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
+         credentialsProvider.setCredentials(AuthScope.ANY,
+         new UsernamePasswordCredentials("user", "password"));
+         clientBuilder.setHttpClientConfigCallback(new RestClientBuilder.HttpClientConfigCallback() {
+        @Override public HttpAsyncClientBuilder customizeHttpClient(HttpAsyncClientBuilder httpClientBuilder) {
+        return httpClientBuilder.setDefaultCredentialsProvider(credentialsProvider);
+        }
         });
 
 
-        //上面采用异步机制实现抢先认证，这个功能也可以禁用，这意味着每个请求都将在没有授权标头的情况下发送，然后查看它是否被接受，
-        //并且在收到HTTP 401响应后，它再使用基本认证头重新发送完全相同的请求，这个可能是基于安全、性能的考虑
-        clientBuilder.setHttpClientConfigCallback(new RestClientBuilder.HttpClientConfigCallback() {
-            @Override
-            public HttpAsyncClientBuilder customizeHttpClient(HttpAsyncClientBuilder httpClientBuilder) {
-                // 禁用抢先认证的方式
-                httpClientBuilder.disableAuthCaching();
-                return httpClientBuilder.setDefaultCredentialsProvider(credentialsProvider);
-            }
+         //上面采用异步机制实现抢先认证，这个功能也可以禁用，这意味着每个请求都将在没有授权标头的情况下发送，然后查看它是否被接受，
+         //并且在收到HTTP 401响应后，它再使用基本认证头重新发送完全相同的请求，这个可能是基于安全、性能的考虑
+         clientBuilder.setHttpClientConfigCallback(new RestClientBuilder.HttpClientConfigCallback() {
+        @Override public HttpAsyncClientBuilder customizeHttpClient(HttpAsyncClientBuilder httpClientBuilder) {
+        // 禁用抢先认证的方式
+        httpClientBuilder.disableAuthCaching();
+        return httpClientBuilder.setDefaultCredentialsProvider(credentialsProvider);
+        }
         });
-        **/
+         **/
         // 最后配置好的clientBuilder再build一下即可得到真正的Client
-        return clientBuilder.build();
+        return clientBuilder;
     }
-
 }
