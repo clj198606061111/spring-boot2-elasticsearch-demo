@@ -13,7 +13,7 @@ public interface EsService {
 
     boolean delById(Integer id) throws IOException;
 
-    City getById(Integer id);
+    City getById(Integer id) throws IOException;
 
     List<City> queryByName(String name);
 }

@@ -4,6 +4,8 @@ import com.alibaba.fastjson.JSON;
 import com.itclj.es.rest.high.entity.City;
 import com.itclj.es.rest.high.service.EsService;
 import org.elasticsearch.action.delete.DeleteRequest;
+import org.elasticsearch.action.get.GetRequest;
+import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.update.UpdateRequest;
 import org.elasticsearch.client.RequestOptions;
@@ -33,7 +35,7 @@ public class EsServiceImpl implements EsService {
 
     @Override
     public City update(City city) throws IOException {
-        client.update(new UpdateRequest(INDEX_CITY,String.valueOf(city.getId())).doc(new IndexRequest(INDEX_CITY).id(String.valueOf(city.getId())).source(JSON.toJSONString(city), XContentType.JSON)),RequestOptions.DEFAULT);
+        client.update(new UpdateRequest(INDEX_CITY, String.valueOf(city.getId())).doc(new IndexRequest(INDEX_CITY).id(String.valueOf(city.getId())).source(JSON.toJSONString(city), XContentType.JSON)), RequestOptions.DEFAULT);
         return city;
     }
 
@@ -44,8 +46,9 @@ public class EsServiceImpl implements EsService {
     }
 
     @Override
-    public City getById(Integer id) {
-        return null;
+    public City getById(Integer id) throws IOException {
+        GetResponse response = client.get(new GetRequest(INDEX_CITY, String.valueOf(id)), RequestOptions.DEFAULT);
+        return JSON.parseObject(response.getSourceAsString(), City.class);
     }
 
     @Override

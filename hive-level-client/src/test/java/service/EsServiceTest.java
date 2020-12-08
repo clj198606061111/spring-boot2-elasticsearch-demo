@@ -50,4 +50,11 @@ public class EsServiceTest extends BaseTest {
         City cityR = esService.update(city);
         logger.info(JSON.toJSONString(cityR));
     }
+
+    @Test
+    public void getById() throws IOException {
+        Integer id = 1;
+        City city = esService.getById(id);
+        logger.info(JSON.toJSONString(city));
+    }
 }
