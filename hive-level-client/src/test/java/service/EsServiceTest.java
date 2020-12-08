@@ -36,4 +36,18 @@ public class EsServiceTest extends BaseTest {
         boolean res = esService.delById(id);
         logger.info("res={}", res);
     }
+
+    @Test
+    public void update() throws IOException {
+        City city = new City();
+        city.setId(1);
+        city.setName("city");
+        city.setCreateBy("itclj");
+        city.setCreateDate(new Date());
+        city.setDesc("这里是北京，修改后的值");
+        city.setPersons(300);
+        city.setTags(Arrays.asList("冷", "沙尘暴", "小吃多"));
+        City cityR = esService.update(city);
+        logger.info(JSON.toJSONString(cityR));
+    }
 }

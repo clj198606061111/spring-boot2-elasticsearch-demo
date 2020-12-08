@@ -9,7 +9,7 @@ public interface EsService {
 
     City add(City city) throws IOException;
 
-    City update(City city);
+    City update(City city) throws IOException;
 
     boolean delById(Integer id) throws IOException;
 
