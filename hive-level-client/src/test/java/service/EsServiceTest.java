@@ -61,7 +61,7 @@ public class EsServiceTest extends BaseTest {
 
     @Test
     public void queryByName() throws IOException {
-        String name = "";
+        String name = "city2";
         List<City> cityList = esService.queryByName(name);
         cityList.forEach(obj -> {
             logger.info(JSON.toJSONString(obj));

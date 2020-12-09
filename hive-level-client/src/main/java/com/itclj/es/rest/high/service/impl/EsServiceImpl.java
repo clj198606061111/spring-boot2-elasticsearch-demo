@@ -14,9 +14,10 @@ import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.common.unit.TimeValue;
 import org.elasticsearch.common.xcontent.XContentType;
-import org.elasticsearch.index.query.QueryBuilder;
+import org.elasticsearch.index.query.*;
 import org.elasticsearch.search.Scroll;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
+import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -66,6 +67,16 @@ public class EsServiceImpl implements EsService {
         request.scroll(new TimeValue(1, TimeUnit.HOURS)); //滚动游标保留多久
         request.setBatchedReduceSize(10);//每批次拉多少条
         request.indices(INDEX_CITY);
+
+        SearchSourceBuilder sourceBuilder = new SearchSourceBuilder();
+        //BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery().must(QueryBuilders.prefixQuery("name", name));
+        PrefixQueryBuilder prefixQueryBuilder = QueryBuilders.prefixQuery("name", name);
+        sourceBuilder.query(prefixQueryBuilder);
+        sourceBuilder.timeout(TimeValue.timeValueMinutes(2L));
+        //sourceBuilder.size(10);//分页量
+        //sourceBuilder.sort("name", SortOrder.DESC);//排序
+
+        request.source(sourceBuilder);
         SearchResponse response = client.search(request, RequestOptions.DEFAULT);
         return Arrays.asList(response.getHits().getHits()).stream().map(obj -> JSON.parseObject(obj.getSourceAsString(), City.class)).collect(Collectors.toList());
     }
